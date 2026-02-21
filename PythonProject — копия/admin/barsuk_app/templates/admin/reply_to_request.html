@@ -1,0 +1,47 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block content %}
+<div id="content-main">
+    <form method="post">
+        {% csrf_token %}
+        <fieldset class="module aligned">
+            <h2>Ответ на заявку #{{ request_obj.id }}</h2>
+
+            <div class="form-row">
+                <label>Пользователь:</label>
+                <div class="readonly">{{ request_obj.user.full_name }} (@{{ request_obj.user.username }})</div>
+            </div>
+
+            <div class="form-row">
+                <label>Телефон:</label>
+                <div class="readonly">{{ request_obj.user.phone }}</div>
+            </div>
+
+            <div class="form-row">
+                <label>Тип заявки:</label>
+                <div class="readonly">{{ request_obj.get_request_type_display }}</div>
+            </div>
+
+            <div class="form-row">
+                <label>Данные заявки:</label>
+                <div class="readonly">
+                    <pre style="background: #f8f8f8; padding: 10px; border-radius: 4px;">{{ request_obj.get_data_display }}</pre>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label for="id_reply">Ваш ответ:</label>
+                <textarea id="id_reply" name="reply" rows="8" cols="80"
+                          style="width: 100%; padding: 8px;"
+                          placeholder="Напишите ответ пользователю..."></textarea>
+            </div>
+        </fieldset>
+
+        <div class="submit-row">
+            <input type="submit" value="📤 Отправить ответ" class="default" name="_send">
+            <a href="{% url 'admin:barsuk_app_request_changelist' %}" class="closelink">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
